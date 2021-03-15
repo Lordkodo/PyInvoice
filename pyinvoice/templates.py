@@ -14,7 +14,7 @@ from pyinvoice.models import PDFInfo, Item, Transaction, InvoiceInfo, ServicePro
 
 
 class SimpleInvoice(SimpleDocTemplate):
-    default_pdf_info = PDFInfo(title='Invoice', author='CiCiApp.com', subject='Invoice')
+    default_pdf_info = PDFInfo(title='Facture', author='desnouvellesdelaterre', subject='Invoice')
     precision = None
 
     def __init__(self, invoice_path, pdf_info=None, precision='0.01'):
@@ -97,8 +97,8 @@ class SimpleInvoice(SimpleDocTemplate):
 
     def _invoice_info_data(self):
         if isinstance(self.invoice_info, InvoiceInfo):
-            props = [('invoice_id', 'Invoice id'), ('invoice_datetime', 'Invoice date'),
-                     ('due_datetime', 'Invoice due date')]
+            props = [('invoice_id', 'Nº de facture'), ('invoice_datetime', 'Date de facture'),
+                     ('due_datetime', 'Échéance de la facture')]
 
             return self._attribute_to_table_data(self.invoice_info, props)
 
@@ -112,8 +112,8 @@ class SimpleInvoice(SimpleDocTemplate):
 
     def _service_provider_data(self):
         if isinstance(self.service_provider_info, ServiceProviderInfo):
-            props = [('name', 'Name'), ('street', 'Street'), ('city', 'City'), ('state', 'State'),
-                     ('country', 'Country'), ('post_code', 'Post code'), ('vat_tax_number', 'Vat/Tax number')]
+            props = [('name', 'Nom'), ('street', 'Rue'), ('city', 'Ville'), ('state', 'Etat'),
+                     ('country', 'Pays'), ('post_code', 'Code postal'), ('vat_tax_number', 'Nº de TVA')]
 
             return self._attribute_to_table_data(self.service_provider_info, props)
 
@@ -130,8 +130,8 @@ class SimpleInvoice(SimpleDocTemplate):
         if not isinstance(self.client_info, ClientInfo):
             return []
 
-        props = [('name', 'Name'), ('street', 'Street'), ('city', 'City'), ('state', 'State'),
-                 ('country', 'Country'), ('post_code', 'Post code'), ('email', 'Email'), ('client_id', 'Client id')]
+        props = [('name', 'Nom'), ('street', 'Rue'), ('city', 'Ville'), ('state', 'Etat'),
+                 ('country', 'Pays'), ('post_code', 'Code postal'), ('email', 'Email'), ('client_id', 'Client id')]
         return self._attribute_to_table_data(self.client_info, props)
 
     def _build_client_info(self):
@@ -210,7 +210,7 @@ class SimpleInvoice(SimpleDocTemplate):
             Paragraph('Detail', self._defined_styles.get('Heading1'))
         )
 
-        item_data_title = ('Name', 'Description', 'Units', 'Unit Price', 'Amount')
+        item_data_title = ('Nom', 'Description', 'Quantité', 'Prix à l\'unité', 'Total')
         item_data.insert(0, item_data_title)  # Insert title
 
         # Summary field
@@ -221,7 +221,7 @@ class SimpleInvoice(SimpleDocTemplate):
         # ##### Subtotal #####
         rounditem_subtotal = self.getroundeddecimal(item_subtotal, self.precision)
         item_data.append(
-            ('Subtotal', '', '', '', rounditem_subtotal)
+            ('Sous-total', '', '', '', rounditem_subtotal)
         )
 
         style.append(('SPAN', (0, sum_start_y_index), (sum_start_x_index, sum_start_y_index)))
@@ -232,7 +232,7 @@ class SimpleInvoice(SimpleDocTemplate):
             tax_total = item_subtotal * (Decimal(str(self._item_tax_rate)) / Decimal('100'))
             roundtax_total = self.getroundeddecimal(tax_total, self.precision)
             item_data.append(
-                ('Vat/Tax ({0}%)'.format(self._item_tax_rate), '', '', '', roundtax_total)
+                ('TVA ({0}%)'.format(self._item_tax_rate), '', '', '', roundtax_total)
             )
             sum_start_y_index += 1
             style.append(('SPAN', (0, sum_start_y_index), (sum_start_x_index, sum_start_y_index)))
