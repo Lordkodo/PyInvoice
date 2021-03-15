@@ -22,9 +22,9 @@ setup(
     license='MIT License',
     description='Invoice/Receipt generator',
     long_description=README,
-    url='https://github.com/CiCiApp/PyInvoice',
+    url='https://github.com/lordkodo/PyInvoice',
     author='zhangshine',
-    author_email='zhangshine0125@gmail.com',
+    author_email='mabillot.paul@gmail.com',
     install_requires=['reportlab'],
     test_suite='tests',
     classifiers=[

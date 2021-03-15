@@ -79,9 +79,9 @@ class SimpleInvoice(SimpleDocTemplate):
     @staticmethod
     def _format_value(value):
         if isinstance(value, datetime):
-            value = value.strftime('%Y-%m-%d %H:%M')
+            value = value.strftime('%d/%m/%Y %H:%M')
         elif isinstance(value, date):
-            value = value.strftime('%Y-%m-%d')
+            value = value.strftime('%d/%m/%Y')
         return value
 
     def _attribute_to_table_data(self, instance, attribute_verbose_name_list):
@@ -97,7 +97,7 @@ class SimpleInvoice(SimpleDocTemplate):
 
     def _invoice_info_data(self):
         if isinstance(self.invoice_info, InvoiceInfo):
-            props = [('invoice_id', 'Nº de facture'), ('invoice_datetime', 'Date de facture'),
+            props = [('invoice_id', 'Nº de la facture'), ('invoice_datetime', 'Date de la facture'),
                      ('due_datetime', 'Échéance de la facture')]
 
             return self._attribute_to_table_data(self.invoice_info, props)
@@ -107,7 +107,7 @@ class SimpleInvoice(SimpleDocTemplate):
     def _build_invoice_info(self):
         invoice_info_data = self._invoice_info_data()
         if invoice_info_data:
-            self._story.append(Paragraph('Invoice', self._defined_styles.get('RightHeading1')))
+            self._story.append(Paragraph('Facture', self._defined_styles.get('RightHeading1')))
             self._story.append(SimpleTable(invoice_info_data, horizontal_align='RIGHT'))
 
     def _service_provider_data(self):
@@ -123,7 +123,7 @@ class SimpleInvoice(SimpleDocTemplate):
         # Merchant
         service_provider_info_data = self._service_provider_data()
         if service_provider_info_data:
-            self._story.append(Paragraph('Service Provider', self._defined_styles.get('RightHeading1')))
+            self._story.append(Paragraph('Fournisseur', self._defined_styles.get('RightHeading1')))
             self._story.append(SimpleTable(service_provider_info_data, horizontal_align='RIGHT'))
 
     def _client_info_data(self):
@@ -146,7 +146,7 @@ class SimpleInvoice(SimpleDocTemplate):
             # Merge Table
             table_data = [
                 [
-                    Paragraph('Service Provider', self._defined_styles.get('Heading1')), '',
+                    Paragraph('Fournisseur', self._defined_styles.get('Heading1')), '',
                     '',
                     Paragraph('Client', self._defined_styles.get('Heading1')), ''
                 ]
@@ -207,7 +207,7 @@ class SimpleInvoice(SimpleDocTemplate):
             return item_data, style
 
         self._story.append(
-            Paragraph('Detail', self._defined_styles.get('Heading1'))
+            Paragraph('Détails', self._defined_styles.get('Heading1'))
         )
 
         item_data_title = ('Nom', 'Description', 'Quantité', 'Prix à l\'unité', 'Total')
